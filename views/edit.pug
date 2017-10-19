@@ -1,0 +1,46 @@
+//- edit layout
+
+extends logged-in.pug
+
+block scripts
+  script(src='/js/edit.js')
+  script(src='https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.1/socket.io.slim.js')
+
+block content
+  br
+  div(class='container')
+    div(class='row')
+      div(class='card grey lighten-5')
+    div(class='row')
+      div(class='card grey lighten-5')
+        form(action='/edit-send', method='POST', enctype='multipart/form-data')
+          div(class='card-content')
+            h5(class='center') Query Type:
+            div(class='row center')
+              div(class='col s4 l4')
+                input(name='qtype', type='radio', id='Add', value='add')
+                label(for='Add') Add
+              div(class='col s4 l4')
+                input(name='qtype', type='radio', id='Withdraw', value='withdraw')
+                label(for='Withdraw') Withdraw
+              div(class='col s4 l4')
+                input(name='qtype', type='radio', id='Check', value='check' checked)
+                label(for='Check') Check
+          div(class='card-content')
+            div(id='lines')
+
+            div(class='center')
+              button(class='btn waves-effect waves-light', type='submit', name='action') submit
+                i(class='material-icons right') send
+
+        a(class='btn-floating btn-large waves-effect waves-light green right' onclick='add_line()')
+          i(class='material-icons') add
+        pre(class='right')="  "
+        a(class='btn-floating btn-large waves-effect waves-light red right' onclick='del_line()')
+          i(class='material-icons') clear
+        pre(class='right')="  "
+        form(action='/edit-upload', method='POST', enctype='multipart/form-data')
+          div(class='file-field input-field')
+            a(class='btn-large waves-effect waves-light blue right')
+              i(class='material-icons') file_upload
+              input(name='upload_file' type='file' onchange='this.form.submit();')

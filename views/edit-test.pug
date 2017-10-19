@@ -1,0 +1,30 @@
+//- edit-test layout
+
+extends logged-in.pug
+
+block scripts
+  script(src='/js/edit.js')
+
+block content
+  br
+  form(action='/edit-send', method='post', enctype='multipart/form-data')
+    p First Name:
+    br
+    input(type='text', name='firstname')
+    br
+    p last name:
+    br
+    input(type='text', name='lastname')
+    br
+    br
+    h5(class='center') Query Type:
+    input(type='radio', name='gender', value='male')
+    p male
+    br
+    input(type='radio', name='gender', value='female')
+    p female
+    br
+    input(type='radio', name='gender', value='other')
+    p other
+    br
+    input(type='submit', value='submit')
