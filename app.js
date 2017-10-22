@@ -52,10 +52,11 @@ io.on('connection', function(socket) {
 
 app.get('/', function (req, res) {
   console.log('HIT!!')
+  console.log(req)
   var sess = req.session
   if (sess.views) {
     sess.views++
-    res.render('index', { title: 'inv'+ sess.views.toString() })
+    res.render('index', { title: 'inv '+ sess.views.toString() })
   } else {
     sess.views = 1
     res.render('index', { title: 'first' })
@@ -90,14 +91,26 @@ app.post('/edit-upload', edit_upload_dest.array('upload_file', 1), function (req
     //console.log(sess.uploaded_query)
 
   }
-  if (req.files[0]['mimetype'] == 'text/csv') {
+  else if (req.files[0]['mimetype'] == 'text/csv') {
     console.log("uploaded csv")
-    query_parsing.parse_digikey_csv(req.files[0]['path']).then( function(parsed) {
+    sess.uploaded_query = query_parsing.parse_digikey_csv2(req.files[0]['path'])
+    console.log(sess.uploaded_query)
+    console.log('set')
+  }
+  /*else if (req.files[0]['mimetype'] == 'text/csv') {
+    console.log("uploaded csv")
+    query_parsing.parse_digikey_csv2(req.files[0]['path']).then( function(parsed) {
       //console.log(parsed)
       sess.uploaded_query = parsed
+      console.log(sess.uploaded_query)
+      console.log('set')
     })
+  }*/
+  else {
+    sess.uploaded_query = "Invalid"
+    //res.render('error', {title: 'Error'})
   }
-  setTimeout(1000);
+  //setTimeout(1000);
   //console.log(sess.uploaded_query)
   res.render('edit', { title: 'Edit Query' })
 })

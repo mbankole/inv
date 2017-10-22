@@ -3,7 +3,8 @@
 
 var fs = require('fs')
 var csvdata = require('csvdata')
-var ExcelCSV = require('excelcsv');
+var csv = require('csv-parser')
+var ExcelCSV = require('excelcsv')
 
 //parses the forms into the internal query object format
 exports.parse_form = function (form_data) {
@@ -48,6 +49,29 @@ exports.parse_digikey_csv = function (csv_path) {
    }
   });
   return parsed2
+}
+
+//parses a digikey csv into the internal query object format, deletes the original
+exports.parse_digikey_csv2 = function (csv_path) {
+  var parsed = {}
+  parsed['type'] = 'N/A'
+  parsed['data'] = new Array()
+  fs.createReadStream(csv_path)
+  .pipe(csv())
+  .on('data', function (data) {
+    parsed['data'].push({})
+    console.log(data)
+    //console.log(data[Index])
+    //console.log(data[Quantity])
+    parsed['data'].push({})
+    parsed['data'][parsed['data'].length - 1]['supplier'] = 'digikey'
+    parsed['data'][parsed['data'].length - 1]['quantity'] = data['Quantity']
+    parsed['data'][parsed['data'].length - 1]['name'] = data['Description']
+    parsed['data'][parsed['data'].length - 1]['supplier_prt'] = data['Part Number']
+    console.log(parsed);
+    //console.log('Name: %s Age: %s', data.NAME, data.AGE)
+  })
+  return parsed
 }
 
 exports.parse_altium_bom = function (bom_path) {

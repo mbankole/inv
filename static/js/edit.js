@@ -61,7 +61,7 @@ function add_line() {
       </div>
       <div class="file-field input-field col s12 l4">
         <div class="btn">
-          <span>File</span>
+          <span>Image</span>
           <input type="file" name='image'>
         </div>
         <div class="file-path-wrapper">
@@ -79,6 +79,9 @@ function add_line() {
         <label for="desc{number}">Description</label>
       </div>
     </div>
+    <a class="btn-floating btn-large waves-effect waves-light red" onclick="del_line({number})">
+      <i class="material-icons">clear</i>
+    </a>
   </div>
   `.format({number: lines.toString()});
 
@@ -93,9 +96,9 @@ function add_line() {
   lines = lines + 1;
 };
 
-function del_line() {
+function del_line(line) {
   if (lines > 1) {
-    $('#line' + (lines - 1).toString()).remove();
+    $('#line' + (line).toString()).remove();
     lines = lines - 1;
   };
 };
